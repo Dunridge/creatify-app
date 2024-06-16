@@ -14,7 +14,7 @@ function App() {
   }
 
   return (
-    <div className="w-full h-screen flex bg-primary text-white py-[20px]">
+    <div className="w-full h-screen flex bg-primary text-white">
       <Sidebar selectVideo={selectVideo} videos={videos}/>
       <Editor selectedVideo={selectedVideo}/>
     </div>
