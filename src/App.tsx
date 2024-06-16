@@ -9,7 +9,6 @@ function App() {
   const [videos, setVideos] = useState<IVideo[]>(appVideos);
 
   const selectVideo = (video: IVideo) => {
-    debugger;
     setSelectedVideo(video);
   }
 
