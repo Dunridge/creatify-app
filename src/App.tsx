@@ -1,8 +1,11 @@
+import Sidebar from "./components/Sidebar";
+import Editor from "./components/Editor";
 
 function App() {
   return (
-    <div className="w-[40px] text-red-500">
-      App
+    <div className="w-full h-screen flex bg-primary text-white py-[20px]">
+      <Sidebar/>
+      <Editor/>
     </div>
   );
 }
