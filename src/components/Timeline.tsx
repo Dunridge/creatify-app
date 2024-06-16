@@ -2,7 +2,7 @@
 export default function Timeline() {
 
     return (
-        <div className="">
+        <div className="h-[800px]">
             Timeline
         </div>
     );
