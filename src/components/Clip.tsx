@@ -1,9 +1,9 @@
-import { useRef, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Rnd } from 'react-rnd';
 import { IClipProps } from '../utils/interfaces/IClipProps';
 
-export default function Clip({ clip, index }: IClipProps) {
+export default function Clip({ clip, index, updateClipSize }: IClipProps) {
   const [isResizing, setIsResizing] = useState(false);
   const rndRef = useRef(null);
 
@@ -11,8 +11,9 @@ export default function Clip({ clip, index }: IClipProps) {
     setIsResizing(true);
   };
 
-  const handleResizeStop = () => {
+  const handleResizeStop = (e: any, direction: any, ref: any, delta: any, position: any) => {
     setIsResizing(false);
+    updateClipSize(clip.id, ref.offsetWidth, ref.offsetHeight);
   };
 
   return (
@@ -33,8 +34,8 @@ export default function Clip({ clip, index }: IClipProps) {
             default={{
               x: 0,
               y: 0,
-              width: 200,
-              height: 50,
+              width: clip.width,
+              height: clip.height,
             }}
             minWidth={100}
             minHeight={50}

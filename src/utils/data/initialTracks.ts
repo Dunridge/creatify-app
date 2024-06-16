@@ -9,6 +9,8 @@ export const initialTracks: ITrack[] = [
             {
                 id: uuid(),
                 title: "Clip 1",
+                width: 200,
+                height: 50,
             }
         ],
     },
@@ -19,6 +21,8 @@ export const initialTracks: ITrack[] = [
             {
                 id: uuid(),
                 title: "Clip 2",
+                width: 200,
+                height: 50,
             }
         ],
     },

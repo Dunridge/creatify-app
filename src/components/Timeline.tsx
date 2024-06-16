@@ -1,12 +1,24 @@
 import { useState } from "react";
 import { DragDropContext } from 'react-beautiful-dnd';
 import { initialTracks } from "../utils/data/initialTracks";
+import { IClip } from "../utils/interfaces/IClip";
 import { ITimelineProps } from "../utils/interfaces/ITimelineProps";
 import { ITrack } from "../utils/interfaces/ITrack";
 import Track from "./Track";
 
-export default function Timeline({ video }: ITimelineProps) {
-    const [tracks, setTracks] = useState(initialTracks);
+export default function Timeline({ }: ITimelineProps) {
+    const [tracks, setTracks] = useState<ITrack[]>(initialTracks);
+
+    const updateClipSize = (clipId: string, width: number, height: number) => {
+        setTracks(prevTracks => 
+            prevTracks.map(track => ({
+                ...track,
+                clips: track.clips.map(clip => 
+                    clip.id === clipId ? { ...clip, width, height } : clip
+                ) as IClip[]
+            }))
+        );
+    };
 
     const onDragEnd = (result: any) => {
         const { destination, source } = result;
@@ -36,7 +48,8 @@ export default function Timeline({ video }: ITimelineProps) {
                 {tracks.map((track: ITrack) => (
                     <Track key={track.id}
                         trackId={track.id.toString()}
-                        clips={track.clips} />
+                        clips={track.clips}
+                        updateClipSize={updateClipSize} />
                 ))}
             </div>
         </DragDropContext>
