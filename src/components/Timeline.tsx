@@ -1,11 +1,11 @@
 import { useState } from "react";
+import { DragDropContext } from 'react-beautiful-dnd';
+import { initialTracks } from "../utils/data/initialTracks";
 import { ITimelineProps } from "../utils/interfaces/ITimelineProps";
 import { ITrack } from "../utils/interfaces/ITrack";
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import Track from "./Track";
-import { initialTracks } from "../utils/data/initialTracks";
 
-export default function Timeline({ }: ITimelineProps) {
+export default function Timeline({ video }: ITimelineProps) {
     const [tracks, setTracks] = useState(initialTracks);
 
     const onDragEnd = (result: any) => {
@@ -30,8 +30,6 @@ export default function Timeline({ }: ITimelineProps) {
         setTracks(newTracks);
     };
 
-    // TODO: here take the duration of the selected video 
-    // TODO: add the dragging logic 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <div className="h-[800px]">
