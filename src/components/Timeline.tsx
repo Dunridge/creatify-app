@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { initialTracks } from "../utils/data/initialTracks";
 import { IClip } from "../utils/interfaces/IClip";
 import { ITimelineProps } from "../utils/interfaces/ITimelineProps";
@@ -20,27 +20,40 @@ export default function Timeline({ }: ITimelineProps) {
         );
     };
 
-    const onDragEnd = (result: any) => {
+    const onDragEnd = (result: DropResult) => {
         const { destination, source } = result;
 
         if (!destination) {
             return;
         }
 
-        const sourceTrackIndex = tracks.findIndex(track => track.id.toString() === source.droppableId);
-        const destinationTrackIndex = tracks.findIndex(track => track.id.toString() === destination.droppableId);
+        if (destination.droppableId === source.droppableId) {
+            const trackIndex = tracks.findIndex(track => track.id === source.droppableId);
+            const track = Array.from(tracks[trackIndex].clips);
+            const [movedClip] = track.splice(source.index, 1);
+            track.splice(destination.index, 0, movedClip);
 
-        const sourceTrack = Array.from(tracks[sourceTrackIndex].clips);
-        const [movedClip] = sourceTrack.splice(source.index, 1);
-        const destinationTrack = Array.from(tracks[destinationTrackIndex].clips);
-        destinationTrack.splice(destination.index, 0, movedClip);
+            const newTracks = Array.from(tracks);
+            newTracks[trackIndex] = { ...tracks[trackIndex], clips: track };
 
-        const newTracks = Array.from(tracks);
-        newTracks[sourceTrackIndex] = { ...tracks[sourceTrackIndex], clips: sourceTrack };
-        newTracks[destinationTrackIndex] = { ...tracks[destinationTrackIndex], clips: destinationTrack };
+            setTracks(newTracks);
+        } else {
+            const sourceTrackIndex = tracks.findIndex(track => track.id === source.droppableId);
+            const destinationTrackIndex = tracks.findIndex(track => track.id === destination.droppableId);
 
-        setTracks(newTracks);
+            const sourceTrack = Array.from(tracks[sourceTrackIndex].clips);
+            const [movedClip] = sourceTrack.splice(source.index, 1);
+            const destinationTrack = Array.from(tracks[destinationTrackIndex].clips);
+            destinationTrack.splice(destination.index, 0, movedClip);
+
+            const newTracks = Array.from(tracks);
+            newTracks[sourceTrackIndex] = { ...tracks[sourceTrackIndex], clips: sourceTrack };
+            newTracks[destinationTrackIndex] = { ...tracks[destinationTrackIndex], clips: destinationTrack };
+
+            setTracks(newTracks);
+        }
     };
+
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
