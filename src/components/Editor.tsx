@@ -7,7 +7,7 @@ export default function Editor({ selectedVideo }: IEditorProps) {
     return (
         <div className="flex-grow flex flex-col justify-between h-full">
             <View selectedVideo={selectedVideo}/>
-            <Timeline/>
+            <Timeline video={selectedVideo}/>
         </div>
     );
 }
