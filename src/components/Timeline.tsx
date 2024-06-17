@@ -57,7 +57,7 @@ export default function Timeline({ }: ITimelineProps) {
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <div className="h-[800px] bg-white/[0.05]">
+            <div className="h-[800px] bg-white/[0.05] py-[40px]">
                 {tracks.map((track: ITrack) => (
                     <Track key={track.id}
                         trackId={track.id.toString()}

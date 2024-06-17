@@ -2,6 +2,7 @@
 export interface IClip {
     id: string;
     title: string;
-    width: 200;
-    height: 50;
+    width: number;
+    height: number;
+    videoId: string;
 }

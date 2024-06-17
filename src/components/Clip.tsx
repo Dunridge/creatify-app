@@ -1,11 +1,17 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { Rnd } from 'react-rnd';
 import { IClipProps } from '../utils/interfaces/IClipProps';
+import { appVideos } from '../utils/data/appVideos';
 
 export default function Clip({ clip, index, updateClipSize }: IClipProps) {
   const [isResizing, setIsResizing] = useState(false);
   const rndRef = useRef(null);
+  const [thumbnail, setThumbnail] = useState<any>();
+
+  useEffect(() => {
+    getVideoThumbnail(clip.videoId);
+  }, [clip.id]);
 
   const handleResizeStart = () => {
     setIsResizing(true);
@@ -14,6 +20,14 @@ export default function Clip({ clip, index, updateClipSize }: IClipProps) {
   const handleResizeStop = (e: any, direction: any, ref: any, delta: any, position: any) => {
     setIsResizing(false);
     updateClipSize(clip.id, ref.offsetWidth, ref.offsetHeight);
+  };
+
+  const getVideoThumbnail = (id: any) => {
+    const targetVideo = appVideos.find((video) => video.id === id);
+    if (targetVideo) {
+      const clipThumbnail = targetVideo.thumbnail;
+      setThumbnail(clipThumbnail);
+    }
   };
 
   return (
@@ -27,6 +41,7 @@ export default function Clip({ clip, index, updateClipSize }: IClipProps) {
             marginBottom: '8px',
             userSelect: 'none',
             pointerEvents: isResizing ? 'none' : 'auto',
+            zIndex: 1000, // Ensure it has a high z-index
           }}
         >
           <Rnd
@@ -45,6 +60,9 @@ export default function Clip({ clip, index, updateClipSize }: IClipProps) {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              backgroundImage: thumbnail ? `url(${thumbnail})` : 'none',
+              backgroundRepeat: 'repeat-x',
+              backgroundSize: '100px 100px'
             }}
             enableResizing={{
               top: false,
